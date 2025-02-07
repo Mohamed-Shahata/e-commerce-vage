@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+dotenv.config();
 import cors from "cors";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
@@ -7,7 +8,6 @@ import errorHandler from "./src/middlewares/errorHandler.js";
 import connectionDB from "./src/config/db.js";
 import authRoutes from "./src/routes/auth.route.js";
 
-dotenv.config();
 connectionDB();
 
 const app = express();

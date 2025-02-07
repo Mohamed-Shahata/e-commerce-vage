@@ -18,6 +18,7 @@ export const register = async (req, res, next) => {
   });
 
   sendEmail(email, RoundNum);
+
   res.status(200).json({ message: "check your email" });
 }
 

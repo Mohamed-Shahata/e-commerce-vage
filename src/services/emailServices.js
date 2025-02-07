@@ -1,12 +1,14 @@
 import { createTransport } from "nodemailer";
-import dotenv from "dotenv";
-dotenv.config();
+// import dotenv from "dotenv";
+// dotenv.config();
+
+// console.log(process.env.EMAIL_USER, "\n", process.env.EMAIL_PASS)
 
 const transport = createTransport({
   service: 'gmail',
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
+    user: "ecommercecompanyteam@gmail.com",
+    pass: "hlia mhgu tvae vdbn"
   },
   tls: {
     rejectUnauthorized: false
@@ -15,7 +17,7 @@ const transport = createTransport({
 
 const sendEmail = async (to, verification) => {
   const mailOptions = {
-    from: process.env.EMAIL_USER,
+    from: "ecommercecompanyteam@gmail.com",
     to,
     subject: "Activate Your Account - Ecobazar",
     html: `<!DOCTYPE html>

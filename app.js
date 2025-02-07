@@ -15,9 +15,11 @@ const app = express();
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
 app.use(helmet());
 app.use(cookieParser());
+app.use(cors({
+  credentials: true
+}));
 
 // Routes
 app.use("/api/auth", authRoutes);

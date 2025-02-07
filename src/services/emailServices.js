@@ -52,9 +52,8 @@ const sendEmail = async (to, verification) => {
         </body>
         </html>`
   };
+
   try {
-
-
     const info = await transport.sendMail(mailOptions);
     console.log("Email sent: ", info.response);
   } catch (error) {

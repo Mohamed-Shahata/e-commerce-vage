@@ -4,7 +4,6 @@ import CustomError from "../utils/customerror.js";
 import bcryptjs from "bcryptjs";
 import { genrateAccessToken, genrateRefreshToken, verifyRefreshToken } from "../utils/tokens.js";
 
-
 export const register = async (req, res, next) => {
   const { email, password } = req.body;
 

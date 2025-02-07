@@ -18,7 +18,7 @@ export const register = async (req, res, next) => {
     email, password, verification: RoundNum
   });
 
-  sendEmail(email, RoundNum);
+  await sendEmail(email, RoundNum);
   res.status(200).json({ message: "check your email" });
 }
 

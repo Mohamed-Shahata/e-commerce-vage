@@ -60,5 +60,6 @@ userScehma.pre("save", async function (next) {
   next();
 });
 
+
 const User = model("User", userScehma);
 export default User;

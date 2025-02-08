@@ -8,7 +8,7 @@ export const auth = (req, res, next) => {
     try {
       token = req.headers.authorization.split(" ")[1];
 
-      const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
       req.user = decoded;
       next();
     } catch (error) {
@@ -28,7 +28,7 @@ export const authorizedRole = (...role) => {
 }
 
 export const checkAccountOwner = (req, res, next) => {
-  if (req.user.role !== "admin" && req.user.id !== req.params.id)
+  if (req.user.role !== "admin" && req.user.id !== req.params.userId)
     return next(new CustomError("Unauthorized action", 403))
   next();
 }

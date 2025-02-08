@@ -13,7 +13,7 @@ export const sendVerificationEmail = async (req, res, next) => {
     return next(new CustomError("User not found", 404));
 
   if (user.email === email)
-    return;
+    return res.status(400).json({ message: "Email already used" })
 
   const token = jwt.sign({ email, id: user._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "10m" });
   const verificationLink = `${process.env.BASE_URL}/api/email/confirm-email?token=${token}`;

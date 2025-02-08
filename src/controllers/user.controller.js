@@ -31,12 +31,14 @@ export const updateUser = async (req, res, next) => {
   const { userId } = req.params;
   const { firstName, lastName, phoneNumber } = req.body;
 
-  const user = await User.findByIdAndUpdate(userId, {
-    firstName, lastName, phoneNumber
-  });
+  const user = await User.findById(userId);
   if (!user) return next(new CustomError("User not found", 404));
 
-  if (user.image && user.image.publicId !== "") {
+  user.firstName = firstName || user.firstName;
+  user.lastName = lastName || user.lastName;
+  user.phoneNumber = phoneNumber || user.phoneNumber;
+
+  if (user.image && user.image.publicId) {
     if (req.files.image) {
       await cloudinary.uploader.destroy(user.image.publicId);
 
@@ -65,7 +67,7 @@ export const deleteUser = async (req, res, next) => {
 
   if (!user) return next(new CustomError("User not found", 404));
 
-  if (user.image && user.image.publicId !== "") {
+  if (user.image && user.image.publicId) {
     await cloudinary.uploader.destroy(user.image.publicId);
   }
   res.status(200).json({ message: "Delete user successful" })

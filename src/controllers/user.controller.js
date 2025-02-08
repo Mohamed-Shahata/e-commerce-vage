@@ -36,7 +36,7 @@ export const updateUser = async (req, res, next) => {
   });
   if (!user) return next(new CustomError("User not found", 404));
 
-  if (user.image.publicId !== "") {
+  if (user.image && user.image.publicId !== "") {
     if (req.files.image) {
       await cloudinary.uploader.destroy(user.image.publicId);
 
@@ -65,7 +65,7 @@ export const deleteUser = async (req, res, next) => {
 
   if (!user) return next(new CustomError("User not found", 404));
 
-  if (user.image.publicId !== "") {
+  if (user.image && user.image.publicId !== "") {
     await cloudinary.uploader.destroy(user.image.publicId);
   }
   res.status(200).json({ message: "Delete user successful" })

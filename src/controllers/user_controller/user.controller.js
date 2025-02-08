@@ -1,6 +1,6 @@
-import cloudinary from "../config/cloudinary.js";
-import User from "../models/user.model.js";
-import CustomError from "../utils/customerror.js"
+import cloudinary from "../../config/cloudinary.js";
+import User from "../../models/user.model.js";
+import CustomError from "../../utils/customerror.js"
 
 export const getUser = async (req, res, next) => {
   const { userId } = req.params;
@@ -38,10 +38,19 @@ export const updateUser = async (req, res, next) => {
   user.lastName = lastName || user.lastName;
   user.phoneNumber = phoneNumber || user.phoneNumber;
 
-  if (user.image && user.image.publicId) {
-    if (req?.files.image) {
-      await cloudinary.uploader.destroy(user.image.publicId);
+  if (req.files && req.files.image) {
+    if (user.image && user.image.publicId) {
+      if (req?.files.image) {
+        await cloudinary.uploader.destroy(user.image.publicId);
 
+        const result = await cloudinary.uploader.upload(req.files.image.tempFilePath, {
+          folder: "users"
+        });
+        user.image.url = result.secure_url;
+        user.image.publicId = result.public_id;
+        await user.save();
+      }
+    } else {
       const result = await cloudinary.uploader.upload(req.files.image.tempFilePath, {
         folder: "users"
       });
@@ -49,13 +58,6 @@ export const updateUser = async (req, res, next) => {
       user.image.publicId = result.public_id;
       await user.save();
     }
-  } else {
-    const result = await cloudinary.uploader.upload(req.files.image.tempFilePath, {
-      folder: "users"
-    });
-    user.image.url = result.secure_url;
-    user.image.publicId = result.public_id;
-    await user.save();
   }
   res.status(200).json({ message: "Operation successful", data: user })
 }

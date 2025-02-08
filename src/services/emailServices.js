@@ -14,12 +14,12 @@ const transport = createTransport({
   }
 });
 
-const sendEmail = async (to, verification) => {
+const sendEmail = async (to, verification, subject, html) => {
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to,
-    subject: "Activate Your Account - Ecobazar",
-    html: `<!DOCTYPE html>
+    subject: subject || "Activate Your Account - Ecobazar",
+    html: html || `<!DOCTYPE html>
         <html lang="en">
         <head>
             <meta charset="UTF-8">

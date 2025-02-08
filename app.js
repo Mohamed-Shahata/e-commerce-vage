@@ -7,7 +7,8 @@ import fileUpload from "express-fileupload";
 import errorHandler from "./src/middlewares/errorHandler.js";
 import connectionDB from "./src/config/db.js";
 import authRoutes from "./src/routes/auth.routes.js";
-import usersRoutes from "./src/routes/user.routes.js";
+import usersRoutes from "./src/routes/user_routes/user.routes.js";
+import emailRoutes from "./src/routes/user_routes/updateEmail.routes.js";
 
 dotenv.config();
 connectionDB();
@@ -27,6 +28,7 @@ app.use(cors({
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", usersRoutes);
+app.use("/api/email", emailRoutes);
 
 // Error Handler
 app.use(errorHandler);

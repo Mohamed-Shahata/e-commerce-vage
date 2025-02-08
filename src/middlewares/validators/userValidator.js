@@ -16,6 +16,18 @@ const userUpdateValidation = Joi.object({
     "string.length": "Phone number must be exactly 12 digits long",
     "string.pattern": "Phone must only contain digits"
   }),
+  password: Joi.string().min(8).max(50).pattern(/[a-z]/)
+    .message("Password must contain at least one lowercase letter")
+    .pattern(/[A-Z]/).message("Password must contain at least one uppercase letter")
+    .pattern(/\d/).message("Password must contain at least one number")
+    .required()
+    .messages({
+      "string.min": "Password must be at least 8 charcaters long",
+      "any.required": "Password is required"
+    }),
+  confirmPass: Joi.string().valid(Joi.ref("password")).required().messages({
+    "any.only": "Confirm password must match password"
+  })
 });
 
 // Genrate validation middleware

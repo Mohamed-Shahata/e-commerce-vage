@@ -1,8 +1,8 @@
 import { Router } from "express";
-import * as userContrller from "../controllers/user.controller.js";
-import { auth, checkAccountOwner } from "../middlewares/authMiddleware.js";
+import * as userContrller from "../../controllers/user_controller/user.controller.js";
+import { auth, checkAccountOwner } from "../../middlewares/authMiddleware.js";
 import expressAsyncHandler from "express-async-handler";
-import { validateorUpdateUser } from "../middlewares/validators/userValidator.js";
+import { validateorUpdateUser } from "../../middlewares/validators/userValidator.js";
 const router = Router();
 
 

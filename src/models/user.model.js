@@ -49,6 +49,21 @@ const userScehma = new Schema({
   cart: [{
     type: Schema.Types.ObjectId
   }]
+}, {
+  toJSON: {
+    transform(doc, ret) {
+      delete ret.password;
+      delete ret.refreshToken;
+      return ret
+    }
+  },
+  toObject: {
+    transform(doc, ret) {
+      delete ret.password;
+      delete ret.refreshToken;
+      return ret
+    }
+  }
 }, { timestamps: true });
 
 userScehma.pre("save", async function (next) {

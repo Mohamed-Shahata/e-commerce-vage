@@ -32,7 +32,6 @@ export const verifyEmail = async (req, res, next) => {
   if (user.verification !== code)
     return next(new CustomError("Code is wrong", 400));
 
-
   const accessToken = genrateAccessToken({ id: user._id, role: user.role });
   const refreshToken = genrateRefreshToken({ id: user._id, role: user.role });
 
@@ -43,10 +42,6 @@ export const verifyEmail = async (req, res, next) => {
 
   await user.save();
 
-  const userObject = user.toObject();
-  delete userObject.password;
-  delete userObject.refreshToken;
-
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     secure: true,
@@ -54,7 +49,7 @@ export const verifyEmail = async (req, res, next) => {
     maxAge: 7 * 24 * 60 * 60 * 1000
   })
 
-  res.status(201).json({ message: "register successfully", data: userObject, accessToken, refreshToken });
+  res.status(201).json({ message: "register successfully", data: user, accessToken, refreshToken });
 }
 
 export const login = async (req, res, next) => {
@@ -74,10 +69,6 @@ export const login = async (req, res, next) => {
   user.refreshToken = refreshToken;
   await user.save();
 
-  const userObject = user.toObject();
-  delete userObject.password;
-  delete userObject.refreshToken;
-
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     secure: true,
@@ -85,7 +76,7 @@ export const login = async (req, res, next) => {
     maxAge: 7 * 24 * 60 * 60 * 1000
   })
 
-  res.status(200).json({ message: "login successfully", data: userObject, accessToken, refreshToken });
+  res.status(200).json({ message: "login successfully", data: user, accessToken, refreshToken });
 };
 
 export const getAccessToken = async (req, res, next) => {

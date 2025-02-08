@@ -39,7 +39,7 @@ export const updateUser = async (req, res, next) => {
   user.phoneNumber = phoneNumber || user.phoneNumber;
 
   if (user.image && user.image.publicId) {
-    if (req.files.image) {
+    if (req?.files.image) {
       await cloudinary.uploader.destroy(user.image.publicId);
 
       const result = await cloudinary.uploader.upload(req.files.image.tempFilePath, {

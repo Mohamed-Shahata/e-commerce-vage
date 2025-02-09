@@ -28,6 +28,23 @@ export const getAllUsers = async (req, res, next) => {
   res.status(200).json({ message: "Operation successful", data: users, totalPages: Math.ceil(total / limit) });
 };
 
+// Update user address info
+export const updateUserAddress = async (req, res, next) => {
+  const { userId } = req.params;
+  const { streetAddress, country, states, zipeCode } = req.body;
+
+  const user = await User.findById(userId);
+  if (!user) return next(new CustomError("User not found", 404));
+
+  user.streetAddress = streetAddress || user.streetAddress;
+  user.country = country || user.country;
+  user.states = states || user.states;
+  user.zipeCode = zipeCode || user.zipeCode;
+
+  await user.save();
+  res.status(200).json({ message: "Operation successful", data: user })
+}
+
 // Update user info
 export const updateUser = async (req, res, next) => {
   const { userId } = req.params;

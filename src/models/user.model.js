@@ -28,6 +28,18 @@ const userScehma = new Schema({
   password: {
     type: String, required: true
   },
+  streetAddress: {
+    type: String, default: ""
+  },
+  country: {
+    type: String, default: ""
+  },
+  states: {
+    type: String, default: ""
+  },
+  zipeCode: {
+    type: String, default: ""
+  },
   isVerified: {
     type: Boolean, default: false
   },

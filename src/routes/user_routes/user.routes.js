@@ -12,7 +12,7 @@ router.get("/:userId", expressAsyncHandler(userContrller.getUser));
 
 router.patch("/:userId", auth, checkAccountOwner, validateorUpdateUser, expressAsyncHandler(userContrller.updateUser));
 
-router.patch("/:userId", auth, checkAccountOwner, validateorUpdateUserAddress, expressAsyncHandler(userContrller.updateUserAddress));
+router.patch("/updateAddress/:userId", auth, checkAccountOwner, validateorUpdateUserAddress, expressAsyncHandler(userContrller.updateUserAddress));
 
 router.post("/updatePassword", auth, expressAsyncHandler(userContrller.updatePassword));
 

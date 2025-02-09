@@ -10,6 +10,8 @@ import authRoutes from "./src/routes/auth.routes.js";
 import usersRoutes from "./src/routes/user_routes/user.routes.js";
 import emailRoutes from "./src/routes/user_routes/updateEmail.routes.js";
 import resetPasswordRoutes from "./src/routes/user_routes/resetPassowrd.routes.js";
+import categoryRoutes from "./src/routes/product_routes/category.routes.js";
+import productRoutes from "./src/routes/product_routes/product.routes.js";
 
 dotenv.config();
 connectionDB();
@@ -26,11 +28,16 @@ app.use(cors({
   credentials: true
 }));
 
-// Routes
+// Routes 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/email", emailRoutes);
 app.use("/api/resetPassword", resetPasswordRoutes);
+
+// Routes Product
+app.use("/api/categories", categoryRoutes);
+app.use("/api/products", productRoutes);
+
 
 // Error Handler
 app.use(errorHandler);

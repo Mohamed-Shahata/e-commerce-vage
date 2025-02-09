@@ -42,6 +42,9 @@ const updateProductValidation = Joi.object({
   }),
   category: Joi.string().trim().optional().messages({
     "string.empty": "Category ID cannot be empty"
+  }),
+  imagesToDelete: Joi.array().optional().messages({
+    "string.empty": "imagesToDelete is empty"
   })
 });
 

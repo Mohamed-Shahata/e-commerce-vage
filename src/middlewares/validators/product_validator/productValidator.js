@@ -43,14 +43,9 @@ const updateProductValidation = Joi.object({
   category: Joi.string().trim().optional().messages({
     "string.empty": "Category ID cannot be empty"
   }),
-  imagesToDelete: Joi.array()
-    .items(Joi.string().trim().required().messages({
-      "string.empty": "Public ID is required"
-    }))
-    .optional()
-    .messages({
-      "array.base": "imagesToDelete must be an array of public IDs"
-    })
+  imagesToDelete: Joi.string().optional().messages({
+    "string.empty": "imagesToDelete is empty"
+  })
 });
 
 

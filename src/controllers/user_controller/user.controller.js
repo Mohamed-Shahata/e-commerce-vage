@@ -1,6 +1,7 @@
 import cloudinary from "../../config/cloudinary.js";
 import User from "../../models/user.model.js";
 import CustomError from "../../utils/customerror.js"
+import bcryptjs from "bcryptjs";
 
 export const getUser = async (req, res, next) => {
   const { userId } = req.params;
@@ -27,6 +28,7 @@ export const getAllUsers = async (req, res, next) => {
   res.status(200).json({ message: "Operation successful", data: users, totalPages: Math.ceil(total / limit) });
 };
 
+// Update user info
 export const updateUser = async (req, res, next) => {
   const { userId } = req.params;
   const { firstName, lastName, phoneNumber } = req.body;
@@ -60,6 +62,27 @@ export const updateUser = async (req, res, next) => {
     }
   }
   res.status(200).json({ message: "Operation successful", data: user })
+}
+
+// Update Password
+export const updatePassword = async (req, res, next) => {
+  const { id } = req.user;
+  const { oldPass, newPass, confirmPass } = req.body;
+
+  const user = await User.findById(id);
+  if (!user)
+    return next(new CustomError("User not found", 404));
+
+  if (!await bcryptjs.compare(oldPass, user.password))
+    return next(new CustomError("Old password id wrong", 400));
+
+  if (newPass !== confirmPass)
+    return next(new CustomError("New password must be confirm password", 400));
+
+  user.password = newPass;
+  await user.save();
+
+  res.status(200).json({ message: "Update password successful" })
 }
 
 export const deleteUser = async (req, res, next) => {

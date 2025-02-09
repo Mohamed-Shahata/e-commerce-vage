@@ -59,8 +59,9 @@ export const login = async (req, res, next) => {
   if (!user)
     return next(new CustomError("Email or password is valid", 400));
 
-  if (!user && !(await bcryptjs.compare(password, user.password)))
-    return next(new CustomError("Email or password is valid", 400));
+  const isPasswordValid = await bcryptjs.compare(password, user.password);
+  if (!isPasswordValid)
+    return next(new CustomError("Email or password is invalid", 400));
 
 
   const accessToken = genrateAccessToken({ id: user._id, role: user.role });

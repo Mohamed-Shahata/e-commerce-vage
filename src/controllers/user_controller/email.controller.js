@@ -7,7 +7,6 @@ export const sendVerificationEmail = async (req, res, next) => {
   const { email } = req.body;
   const id = req.user.id;
 
-
   const user = await User.findById(id);
   if (!user)
     return next(new CustomError("User not found", 404));

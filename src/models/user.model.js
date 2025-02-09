@@ -64,7 +64,8 @@ const userScehma = new Schema({
       return ret
     }
   }
-}, { timestamps: true });
+}
+  , { timestamps: true });
 
 userScehma.pre("save", async function (next) {
   if (!this.isModified("password"))

@@ -12,6 +12,8 @@ router.get("/:userId", expressAsyncHandler(userContrller.getUser));
 
 router.patch("/:userId", auth, checkAccountOwner, validateorUpdateUser, expressAsyncHandler(userContrller.updateUser));
 
+router.post("/updatePassword", auth, expressAsyncHandler(userContrller.updatePassword));
+
 router.delete("/:userId", auth, checkAccountOwner, expressAsyncHandler(userContrller.deleteUser));
 
 

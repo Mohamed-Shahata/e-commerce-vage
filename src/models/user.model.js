@@ -37,7 +37,7 @@ const userScehma = new Schema({
   states: {
     type: String, default: ""
   },
-  zipeCode: {
+  zipCode: {
     type: String, default: ""
   },
   isVerified: {

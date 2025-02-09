@@ -31,7 +31,7 @@ export const getAllUsers = async (req, res, next) => {
 // Update user address info
 export const updateUserAddress = async (req, res, next) => {
   const { userId } = req.params;
-  const { streetAddress, country, states, zipeCode } = req.body;
+  const { streetAddress, country, states, zipCode } = req.body;
 
   const user = await User.findById(userId);
   if (!user) return next(new CustomError("User not found", 404));
@@ -39,7 +39,7 @@ export const updateUserAddress = async (req, res, next) => {
   user.streetAddress = streetAddress || user.streetAddress;
   user.country = country || user.country;
   user.states = states || user.states;
-  user.zipeCode = zipeCode || user.zipeCode;
+  user.zipCode = zipCode || user.zipCode;
 
   await user.save();
   res.status(200).json({ message: "Operation successful", data: user })

@@ -1,5 +1,6 @@
 import cloudinary from "../../config/cloudinary.js";
 import Product from "../../models/product_model/product.model.js";
+import Category from "../../models/product_model/category.model.js";
 import CustomError from "../../utils/customerror.js";
 
 export const createProduct = async (req, res, next) => {
@@ -58,6 +59,11 @@ export const updateProduct = async (req, res, next) => {
   product.description = description || product.description;
   product.price = price || product.price;
   product.discount = discount || product.discount;
+
+  const isCategory = await Category.findById(category);
+  if (!isCategory)
+    return next(new CustomError("Category not found", 404));
+
   product.category = category || product.category;
 
 

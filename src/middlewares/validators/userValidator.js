@@ -2,11 +2,11 @@ import Joi from "joi";
 
 const userUpdateValidation = Joi.object({
   firstName: Joi.string().trim().min(2).max(30).messages({
-    "string.min": "First name must be at least 2 charcaters long",
+    "string.min": "First Name must be at least 2 charcaters long",
     "string.empty": "First Name is empty"
   }),
   lastName: Joi.string().trim().min(2).max(30).messages({
-    "string.min": "Last name must be at least 2 charcaters long",
+    "string.min": "Last Name must be at least 2 charcaters long",
     "string.empty": "Last Name is empty"
   }),
   phoneNumber: Joi.string().length(12).pattern(/^[0-9]+$/).messages({

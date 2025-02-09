@@ -60,11 +60,13 @@ export const updateProduct = async (req, res, next) => {
   product.price = price || product.price;
   product.discount = discount || product.discount;
 
-  const isCategory = await Category.findById(category);
-  if (!isCategory)
-    return next(new CustomError("Category not found", 404));
+  if (category) {
+    const isCategory = await Category.findById(category);
+    if (!isCategory)
+      return next(new CustomError("Category not found", 404));
 
-  product.category = category || product.category;
+    product.category = category || product.category;
+  }
 
 
   if (imagesToDelete && imagesToDelete.length > 0) {

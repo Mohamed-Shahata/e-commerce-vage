@@ -4,7 +4,17 @@ import Category from "../../models/product_model/category.model.js";
 import CustomError from "../../utils/customerror.js";
 
 export const createProduct = async (req, res, next) => {
-  const { name, description, price, discount, category } = req.body;
+  const { name, description, price, discount, category, stockQuantity } = req.body;
+
+
+  if (category) {
+    const isCategory = await Category.findById(category);
+    if (!isCategory)
+      return next(new CustomError("Category not found", 404));
+
+    product.category = category || product.category;
+  }
+
 
   if (!req.files || !req.files.images)
     return next(new CustomError("Must be upload images of product", 400));
@@ -25,7 +35,7 @@ export const createProduct = async (req, res, next) => {
   };
 
   const product = await Product.create({
-    name, description, price, discount, category, images: uploadedImages
+    name, description, price, discount, category, images: uploadedImages, stockQuantity
   });
   res.status(201).json({ message: "Create product successful", data: product });
 };
@@ -49,7 +59,7 @@ export const getProducts = async (req, res, next) => {
 
 export const updateProduct = async (req, res, next) => {
   const { productId } = req.params;
-  const { name, description, price, discount, category, imagesToDelete } = req.body;
+  const { name, description, price, discount, category, imagesToDelete, stockQuantity } = req.body;
 
   const product = await Product.findById(productId);
   if (!product)
@@ -59,6 +69,7 @@ export const updateProduct = async (req, res, next) => {
   product.description = description || product.description;
   product.price = price || product.price;
   product.discount = discount || product.discount;
+  product.stockQuantity = stockQuantity || product.stockQuantity;
 
   if (category) {
     const isCategory = await Category.findById(category);

@@ -59,7 +59,10 @@ const userScehma = new Schema({
     type: Schema.Types.ObjectId
   }],
   cart: [{
-    type: Schema.Types.ObjectId
+    type: Schema.Types.ObjectId, ref: "Product"
+  }],
+  wishlist: [{
+    type: Schema.Types.ObjectId, ref: "Product"
   }]
 }, {
   toJSON: {

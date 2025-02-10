@@ -1,4 +1,5 @@
 import cloudinary from "../../config/cloudinary.js";
+import Product from "../../models/product_model/product.model.js";
 import User from "../../models/user.model.js";
 import CustomError from "../../utils/customerror.js"
 import bcryptjs from "bcryptjs";
@@ -113,4 +114,46 @@ export const deleteUser = async (req, res, next) => {
     await cloudinary.uploader.destroy(user.image.publicId);
   }
   res.status(200).json({ message: "Delete user successful" })
+};
+
+
+export const addWishlist = async (req, res, next) => {
+  const { id } = req.user;
+  const { productId } = req.params;
+
+
+  const user = await User.findById(id);
+  if (!user) return next(new CustomError("User not found", 404));
+
+  const product = await Product.findById(productId);
+  if (!product) return next(new CustomError("Product not found", 404));
+
+  if (user.wishlist.includes(product._id)) {
+    return res.status(400).json({ message: 'Product already in your wishlist' });
+  }
+
+  user.wishlist.push(product._id);
+  await user.save();
+  res.status(200).json({ message: 'Product added in your whishlist', data: user.wishlist });
 }
+
+export const getWishlist = async (req, res, next) => {
+  const { id } = req.user;
+
+  const user = await User.findById(id);
+  if (!user) return next(new CustomError("User not found", 404));
+  res.status(200).json({ message: 'Opration successful', data: user.wishlist });
+}
+
+export const removeWishlist = async (req, res, next) => {
+  const { id } = req.user;
+  const { productId } = req.params;
+
+
+  const user = await User.findById(id);
+  if (!user) return next(new CustomError("User not found", 404));
+
+  user.wishlist = user.wishlist.filter((product) => product.toString() !== productId);
+  await user.save();
+  res.status(200).json({ message: 'Product remove in your whishlist', data: user.wishlist });
+};

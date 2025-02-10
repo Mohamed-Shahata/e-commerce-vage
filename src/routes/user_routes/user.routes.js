@@ -20,5 +20,13 @@ router.delete("/:userId", auth, checkAccountOwner, expressAsyncHandler(userContr
 
 
 
+router.post("/:userId/wishlist/:productId", auth, checkAccountOwner, expressAsyncHandler(userContrller.addWishlist));
+
+router.get("/:userId/wishlist", auth, checkAccountOwner, expressAsyncHandler(userContrller.getWishlist));
+
+router.delete("/:userId/wishlist/:productId", auth, checkAccountOwner, expressAsyncHandler(userContrller.removeWishlist));
+
+
+
 
 export default router;

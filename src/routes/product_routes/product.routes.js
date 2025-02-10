@@ -11,11 +11,23 @@ router.post("/", auth, authorizedRole('admin'), validateorCreateProduct, express
 
 router.get("/", expressAsyncHandler(productController.getProducts));
 
+router.get("/search", auth, expressAsyncHandler(productController.searchProducts));
+
 router.get("/:productId", expressAsyncHandler(productController.getProduct));
 
 router.patch("/:productId", auth, authorizedRole('admin'), validateorUpdateProduct, expressAsyncHandler(productController.updateProduct));
 
 router.delete("/:productId", auth, authorizedRole('admin'), expressAsyncHandler(productController.deleteProduct));
+
+
+
+
+router.post("/:productId/review", auth, expressAsyncHandler(productController.addReview));
+
+router.patch("/:productId/review/:reviewId", auth, expressAsyncHandler(productController.updateReview));
+
+router.delete("/:productId/review/:reviewId", auth, expressAsyncHandler(productController.deleteReview));
+
 
 
 

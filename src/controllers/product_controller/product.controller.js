@@ -2,6 +2,7 @@ import cloudinary from "../../config/cloudinary.js";
 import Product from "../../models/product_model/product.model.js";
 import Category from "../../models/product_model/category.model.js";
 import CustomError from "../../utils/customerror.js";
+import User from "../../models/user.model.js";
 
 export const createProduct = async (req, res, next) => {
   const { name, description, price, discount, category, stockQuantity } = req.body;
@@ -11,8 +12,6 @@ export const createProduct = async (req, res, next) => {
     const isCategory = await Category.findById(category);
     if (!isCategory)
       return next(new CustomError("Category not found", 404));
-
-    product.category = category || product.category;
   }
 
 
@@ -51,8 +50,25 @@ export const getProduct = async (req, res, next) => {
 }
 
 export const getProducts = async (req, res, next) => {
+  const { minPrice, maxPrice, category, minRating } = req.query;
 
-  const products = await Product.find();
+  let filter = {};
+
+  if (minPrice || maxPrice) {
+    filter.price = {};
+    if (minPrice) filter.price.$gte = Number(minPrice);
+    if (maxPrice) filter.price.$lte = Number(maxPrice);
+  };
+
+  if (category) {
+    filter.category = category;
+  };
+
+  if (minRating) {
+    filter.rate = { $gte: Number(minRating) };
+  }
+
+  const products = await Product.find(filter).populate("category");
 
   res.status(200).json({ message: "Opration successful", data: products });
 };
@@ -116,4 +132,73 @@ export const deleteProduct = async (req, res, next) => {
   };
   await product.deleteOne();
   res.status(200).json({ message: "Delete successful" });
+}
+
+export const searchProducts = async (req, res, next) => {
+  const { keyword } = req.query;
+
+  if (!keyword)
+    return next(new CustomError("keyword is empty", 404));
+
+  const products = await Product.find({
+    $or: [
+      { name: { $regex: keyword, $options: 'i' } },
+      { description: { $regex: keyword, $options: 'i' } }
+    ]
+  });
+  res.status(200).json({ message: "Opration successful", data: products });
+};
+
+
+export const addReview = async (req, res, next) => {
+  const { productId } = req.params;
+  const { userId, text } = req.body;
+
+
+  const product = await Product.findById(productId);
+  if (!product)
+    return next(new CustomError("Product not found", 404));
+
+  const user = await User.findById(userId);
+  if (!user)
+    return next(new CustomError("User not found", 404));
+
+  product.review.push({
+    user: user._id,
+    text
+  });
+  await product.save();
+  res.status(200).json({ message: "Created review successful", data: product.review });
+}
+
+
+export const updateReview = async (req, res, next) => {
+  const { productId, reviewId } = req.params;
+  const { text } = req.body;
+
+
+  let product = await Product.findById(productId);
+  if (!product)
+    return next(new CustomError("Product not found", 404));
+
+  const review = product.review.id(reviewId);
+  if (!review)
+    return next(new CustomError("Review not found", 404));
+
+  review.text = text;
+  await product.save();
+  res.status(200).json({ message: "Update review successful", data: product.review });
+}
+
+
+export const deleteReview = async (req, res, next) => {
+  const { productId, reviewId } = req.params;
+
+  const product = await Product.findById(productId);
+  if (!product)
+    return next(new CustomError("Product not found", 404));
+
+  product.review = product.review.filter((rev) => rev._id.toString() !== reviewId);
+  await product.save();
+  res.status(200).json({ message: "Delete review successful", data: product.review });
 }

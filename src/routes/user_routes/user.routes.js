@@ -3,7 +3,9 @@ import * as userContrller from "../../controllers/user_controller/user.controlle
 import { auth, checkAccountOwner } from "../../middlewares/authMiddleware.js";
 import expressAsyncHandler from "express-async-handler";
 import { validateorUpdateUser, validateorUpdateUserAddress } from "../../middlewares/validators/userValidator.js";
+import * as cartContrroller from "../../controllers/user_controller/user.controller.js";
 const router = Router();
+
 
 
 router.get("/", auth, expressAsyncHandler(userContrller.getAllUsers));
@@ -25,6 +27,16 @@ router.post("/:userId/wishlist/:productId", auth, checkAccountOwner, expressAsyn
 router.get("/:userId/wishlist", auth, checkAccountOwner, expressAsyncHandler(userContrller.getWishlist));
 
 router.delete("/:userId/wishlist/:productId", auth, checkAccountOwner, expressAsyncHandler(userContrller.removeWishlist));
+
+
+
+router.post("/:userId/cart", auth, checkAccountOwner, expressAsyncHandler(cartContrroller.addToCart));
+
+router.patch("/:userId/cart", auth, checkAccountOwner, expressAsyncHandler(cartContrroller.updateCart));
+
+router.delete("/:userId/cart", auth, checkAccountOwner, expressAsyncHandler(cartContrroller.deleteCart));
+
+router.get("/:userId/cart", auth, checkAccountOwner, expressAsyncHandler(cartContrroller.getCart));
 
 
 

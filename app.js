@@ -12,6 +12,7 @@ import emailRoutes from "./src/routes/user_routes/updateEmail.routes.js";
 import resetPasswordRoutes from "./src/routes/user_routes/resetPassowrd.routes.js";
 import categoryRoutes from "./src/routes/product_routes/category.routes.js";
 import productRoutes from "./src/routes/product_routes/product.routes.js";
+import paymentRoutes from "./src/routes/payment.routes.js";
 
 dotenv.config();
 connectionDB();
@@ -37,6 +38,9 @@ app.use("/api/resetPassword", resetPasswordRoutes);
 // Routes Product
 app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productRoutes);
+
+// Routes Payment
+app.use("/api/payment", paymentRoutes)
 
 
 // Error Handler

@@ -27,13 +27,13 @@ app.use(helmet());
 app.use(cookieParser());
 app.use(cors({
   origin: ['http://localhost:3000', 'http://127.0.0.1:5500'],
-  methods: "GET,POST,PUT,PATCH,DELETE",
+  methods: "GET, POST, PUT, PATCH, DELETE",
   credentials: true
 }));
 
 // Handle Preflight Requests
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Origin", "*"); // السماح بكل الأصوات أو تحديد أكثر من واحد
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE");
   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
   res.header("Access-Control-Allow-Credentials", "true");

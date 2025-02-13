@@ -24,6 +24,7 @@ export const register = async (req, res, next) => {
 
 export const verifyEmail = async (req, res, next) => {
   const { email, code } = req.body;
+  console.log(req.body);
 
   const user = await User.findOne({ email });
   if (!user)

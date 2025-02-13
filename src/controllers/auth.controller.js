@@ -29,7 +29,7 @@ export const verifyEmail = async (req, res, next) => {
   if (!user)
     return next(new CustomError("User not found", 404));
 
-  if (user.verification.toString() !== code.toString())
+  if (user.verification.toString() !== String(code).trim())
     return next(new CustomError("Code is wrong", 400));
 
   const accessToken = genrateAccessToken({ id: user._id, role: user.role });

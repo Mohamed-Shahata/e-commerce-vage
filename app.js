@@ -33,7 +33,7 @@ app.use(cors({
 
 // Handle Preflight Requests
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*"); // السماح بكل الأصوات أو تحديد أكثر من واحد
+  res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE");
   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
   res.header("Access-Control-Allow-Credentials", "true");

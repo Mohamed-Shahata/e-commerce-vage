@@ -26,7 +26,7 @@ app.use(fileUpload({ useTempFiles: true }));
 app.use(helmet());
 app.use(cookieParser());
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://127.0.0.1:5501'],
+  origin: 'http://localhost:3000',
   methods: "GET, POST, PUT, PATCH, DELETE",
   credentials: true
 }));
@@ -34,7 +34,7 @@ app.use(cors({
 // Handle Preflight Requests
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // نفس ال origin اللي في cors
-  res.header("Access-Control-Allow-Origin", "http://127.0.0.1:5501"); // نفس ال origin اللي في cors
+  // res.header("Access-Control-Allow-Origin", "http://127.0.0.1:5501"); // نفس ال origin اللي في cors
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE");
   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
   res.header("Access-Control-Allow-Credentials", "true");

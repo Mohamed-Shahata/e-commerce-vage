@@ -44,7 +44,7 @@ const userScehma = new Schema({
     type: Boolean, default: false
   },
   verification: {
-    type: String,
+    type: String, default: ""
   },
   role: {
     type: String,

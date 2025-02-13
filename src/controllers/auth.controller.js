@@ -24,26 +24,25 @@ export const register = async (req, res, next) => {
 
 export const verifyEmail = async (req, res, next) => {
   const { email, code } = req.body;
-  console.log(req.body, "\n");
+
+  console.log("Incoming Data:", req.body);
+
+  const user = await User.findOne({ email });
+  if (!user) return next(new CustomError("User not found", 404));
 
   console.log("Code from DB:", `"${user.verification}"`);
   console.log("Code from Request:", `"${String(code).trim()}"`);
-  console.log("Condition Check:", user.verification.toString() !== String(code).trim());
 
-
-  const user = await User.findOne({ email });
-  if (!user)
-    return next(new CustomError("User not found", 404));
-
-  // if (user.verification.toString() !== String(code).trim())
-  //   return next(new CustomError("Code is wrong", 400));
+  if (user.verification.toString().trim() !== String(code).trim()) {
+    console.log("Code mismatch!"); // سجل عند حدوث خطأ
+    return next(new CustomError("Code is wrong", 400));
+  }
 
   const accessToken = genrateAccessToken({ id: user._id, role: user.role });
   const refreshToken = genrateRefreshToken({ id: user._id, role: user.role });
 
   user.refreshToken = refreshToken;
-
-  user.verification = "";
+  user.verification = ""; // احفظ التغيير بعد التحقق
   user.isVerified = true;
 
   await user.save();
@@ -53,10 +52,11 @@ export const verifyEmail = async (req, res, next) => {
     secure: true,
     sameSite: 'Strict',
     maxAge: 7 * 24 * 60 * 60 * 1000
-  })
+  });
 
   res.status(201).json({ message: "register successfully", data: user, accessToken, refreshToken });
-}
+};
+
 
 export const login = async (req, res, next) => {
   const { email, password } = req.body;

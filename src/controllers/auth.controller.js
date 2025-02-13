@@ -33,28 +33,31 @@ export const verifyEmail = async (req, res, next) => {
   console.log("Code from DB:", `"${user.verification}"`);
   console.log("Code from Request:", `"${String(code).trim()}"`);
 
-  if (user.verification.toString().trim() !== String(code).trim()) {
+  if (user.verification.toString().trim() === String(code).trim()) {
+
+    const accessToken = genrateAccessToken({ id: user._id, role: user.role });
+    const refreshToken = genrateRefreshToken({ id: user._id, role: user.role });
+
+    user.refreshToken = refreshToken;
+    user.verification = "";
+    user.isVerified = true;
+
+    await user.save();
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'Strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    });
+
+    res.status(201).json({ message: "register successfully", data: user, accessToken, refreshToken });
+  } else {
     console.log("Code mismatch!");
     return next(new CustomError("Code is wrong", 400));
   }
 
-  const accessToken = genrateAccessToken({ id: user._id, role: user.role });
-  const refreshToken = genrateRefreshToken({ id: user._id, role: user.role });
 
-  user.refreshToken = refreshToken;
-  user.verification = "";
-  user.isVerified = true;
-
-  await user.save();
-
-  res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'Strict',
-    maxAge: 7 * 24 * 60 * 60 * 1000
-  });
-
-  res.status(201).json({ message: "register successfully", data: user, accessToken, refreshToken });
 };
 
 

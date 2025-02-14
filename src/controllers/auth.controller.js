@@ -19,7 +19,7 @@ export const register = async (req, res, next) => {
 
   sendEmail(email, RoundNum);
 
-  res.status(200).json({ message: "check your email" });
+  res.status(200).json({ message: "check your email", success: true });
 }
 
 export const verifyEmail = async (req, res, next) => {
@@ -51,13 +51,11 @@ export const verifyEmail = async (req, res, next) => {
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
 
-    res.status(201).json({ message: "register successfully", data: user, accessToken, refreshToken });
+    res.status(201).json({ message: "register successfully", data: user, accessToken, success: true });
   } else {
     console.log("Code mismatch!");
     return next(new CustomError("Code is wrong", 400));
   }
-
-
 };
 
 
@@ -86,7 +84,7 @@ export const login = async (req, res, next) => {
     maxAge: 7 * 24 * 60 * 60 * 1000
   })
 
-  res.status(200).json({ message: "login successfully", data: user, accessToken, refreshToken });
+  res.status(200).json({ message: "login successfully", data: user, accessToken, success: true });
 };
 
 export const getAccessToken = async (req, res, next) => {
@@ -104,7 +102,7 @@ export const getAccessToken = async (req, res, next) => {
     return next(new CustomError("Invalid refresh token", 403))
 
   const newAccessToken = genrateAccessToken({ id: user._id, role: user.role });
-  res.status(201).json({ message: "Created Access Token Successfully", accessToken: newAccessToken });
+  res.status(201).json({ message: "Created Access Token Successfully", accessToken: newAccessToken, success: true });
 };
 
 export const logout = async (req, res, next) => {
@@ -125,5 +123,5 @@ export const logout = async (req, res, next) => {
     secure: true,
     sameSite: 'Strict',
   });
-  res.status(200).json({ message: "Logout successfully" });
+  res.status(200).json({ message: "Logout successfully", success: true });
 }

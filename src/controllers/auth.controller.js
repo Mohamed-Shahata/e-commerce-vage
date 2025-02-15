@@ -109,7 +109,7 @@ export const logout = async (req, res, next) => {
   const { refreshToken } = req.cookies;
 
   if (!refreshToken)
-    return next(new CustomError("No refresh token provided", 403));
+    return next(new CustomError("No refresh token provided", 401));
 
   const user = await User.findOne({ refreshToken });
   if (!user)

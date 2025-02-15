@@ -47,7 +47,7 @@ export const verifyEmail = async (req, res, next) => {
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: true,
-      sameSite: 'None',
+      sameSite: 'Strict',
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
 
@@ -80,7 +80,7 @@ export const login = async (req, res, next) => {
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     secure: true,
-    sameSite: 'None',
+    sameSite: 'Strict',
     maxAge: 7 * 24 * 60 * 60 * 1000
   })
 
@@ -106,21 +106,15 @@ export const getAccessToken = async (req, res, next) => {
 };
 
 export const logout = async (req, res, next) => {
-  const { id } = req.user;
   // const { refreshToken } = req.cookies;
-
-
-  const user = await User.findById(id);
-  if (!user)
-    return next(new CustomError("No refresh token provided", 401));
-
+  const { id } = req.user;
 
   // if (!refreshToken)
   //   return next(new CustomError("No refresh token provided", 401));
 
-  // const user = await User.findOne({ refreshToken });
-  // if (!user)
-  //   return next(new CustomError("User not found", 404));
+  const user = await User.findById(id);
+  if (!user)
+    return next(new CustomError("User not found", 404));
 
   user.refreshToken = null;
   await user.save();

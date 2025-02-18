@@ -119,10 +119,12 @@ export const logout = async (req, res, next) => {
   user.refreshToken = null;
   await user.save();
 
-  res.clearCookie("refreshToken", {
-    httpOnly: true,
-    secure: true,
-    // sameSite: 'None',
-  });
+  res.clearCookie("refreshToken", 
+  //   {
+  //   httpOnly: true,
+  //   secure: true,
+  //   sameSite: 'None',
+  // }
+);
   res.status(200).json({ message: "Logout successfully", success: true });
 }

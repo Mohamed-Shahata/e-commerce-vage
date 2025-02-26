@@ -53,7 +53,7 @@ const userScehma = new Schema({
   },
   refreshToken: {
     type: String,
-    default: null
+    default: ""
   },
   orders: [{
     type: Schema.Types.ObjectId

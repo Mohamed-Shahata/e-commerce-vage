@@ -44,12 +44,14 @@ export const verifyEmail = async (req, res, next) => {
 
     await user.save();
 
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'Strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000
-    });
+    res.cookie("refreshToken", refreshToken
+      // {
+      // httpOnly: true,
+      // secure: true,
+      // sameSite: 'Strict',
+      // maxAge: 7 * 24 * 60 * 60 * 1000
+      // }
+    );
 
     res.status(201).json({ message: "register successfully", data: user, accessToken, success: true });
   } else {
@@ -77,12 +79,14 @@ export const login = async (req, res, next) => {
   user.refreshToken = refreshToken;
   await user.save();
 
-  res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'Strict',
-    maxAge: 7 * 24 * 60 * 60 * 1000
-  })
+  res.cookie("refreshToken", refreshToken
+    // {
+    //   httpOnly: true,
+    //   secure: true,
+    //   sameSite: 'Strict',
+    //   maxAge: 7 * 24 * 60 * 60 * 1000
+    // }
+  )
 
   res.status(200).json({ message: "login successfully", data: user, accessToken, success: true });
 };
@@ -116,15 +120,15 @@ export const logout = async (req, res, next) => {
   if (!user)
     return next(new CustomError("User not found", 404));
 
-  user.refreshToken = null;
+  user.refreshToken = "";
   await user.save();
 
-  res.clearCookie("refreshToken", 
-  //   {
-  //   httpOnly: true,
-  //   secure: true,
-  //   sameSite: 'None',
-  // }
-);
+  res.clearCookie("refreshToken",
+    //   {
+    //   httpOnly: true,
+    //   secure: true,
+    //   sameSite: 'None',
+    // }
+  );
   res.status(200).json({ message: "Logout successfully", success: true });
 }

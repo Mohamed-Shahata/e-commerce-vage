@@ -110,13 +110,13 @@ export const getAccessToken = async (req, res, next) => {
 };
 
 export const logout = async (req, res, next) => {
-  const { refreshToken } = req.cookies;
-  const { id } = req.user;
+  // const { refreshToken } = req.cookies;
+  const { id } = req.params;
 
   // if (!refreshToken)
   //   return next(new CustomError("No refresh token provided", 401));
 
-  const user = await User.findOne({ refreshToken })
+  const user = await User.findById(id);
   if (!user)
     return next(new CustomError("User not found", 404));
 

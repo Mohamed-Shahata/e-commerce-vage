@@ -111,7 +111,7 @@ export const getAccessToken = async (req, res, next) => {
 
 export const logout = async (req, res, next) => {
   // const { refreshToken } = req.cookies;
-  const { id } = req.params;
+  const { id } = req.user;
 
   // if (!refreshToken)
   //   return next(new CustomError("No refresh token provided", 401));

@@ -15,7 +15,7 @@ router.post("/login", validateorLogin, expressAsyncHandler(authController.login)
 
 router.get("/refreshToken", expressAsyncHandler(authController.getAccessToken));
 
-router.post("/logout", auth, expressAsyncHandler(authController.logout));
+router.post("/logout", expressAsyncHandler(authController.logout));
 
 
 
